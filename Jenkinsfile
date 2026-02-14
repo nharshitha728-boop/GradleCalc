@@ -1,17 +1,14 @@
 pipeline {
     agent any
     
-    // THIS IS THE MISSING PIECE
     tools {
-        gradle 'gradle8' // This name MUST match exactly what you typed in Global Tool Configuration
-        jdk 'JDK21'      // This name MUST match exactly what you typed in Global Tool Configuration
+        gradle 'gradle8' 
+        jdk 'JDK17'      // Changed from JDK21 to JDK17 to match your Jenkins
     }
 
     stages {
         stage('Build & Test') {
             steps {
-                echo 'Running Gradle...'
-                // Since we are using the Jenkins Tool, we use 'gradle' directly
                 bat 'gradle clean test'
             }
         }
