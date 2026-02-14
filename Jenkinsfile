@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     tools {
-        // Changed from 'gradle8' to 'gradle8.5' to match your Jenkins settings
         gradle 'gradle8.5' 
         jdk 'JDK17' 
     }
@@ -10,7 +9,8 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
-                echo 'Running Gradle Build and Test...'
+                echo 'Running Gradle...'
+                // Running the build and test in one command
                 bat 'gradle clean test'
             }
         }
@@ -18,7 +18,8 @@ pipeline {
 
     post {
         always {
-            script {
+            // We use 'node' to provide the necessary FilePath context
+            node('built-in' || 'master') {
                 echo 'Recording Test Results...'
                 junit '**/build/test-results/test/*.xml'
             }
