@@ -1,19 +1,17 @@
 pipeline {
     agent any
-    
     stages {
-        stage('Build & Test') {
+        stage('Initialize Gradle') {
             steps {
-                // 'clean test' deletes old files and runs JUnit
-                bat 'gradlew clean test'
+                // This creates the wrapper if it's missing
+                bat 'gradle wrapper' 
             }
         }
-    }
-    
-    post {
-        always {
-            // Gradle puts test results here by default
-            junit 'build/test-results/test/*.xml'
+        stage('Build and Test') {
+            steps {
+                // This is the "Terminal Command" run by the cloud
+                bat 'gradlew test'
+            }
         }
     }
 }
