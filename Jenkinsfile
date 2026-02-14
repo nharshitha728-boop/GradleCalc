@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        gradle 'gradle8' 
+        // Changed from 'gradle8' to 'gradle8.5' to match your Jenkins settings
+        gradle 'gradle8.5' 
         jdk 'JDK17' 
     }
 
     stages {
         stage('Build & Test') {
             steps {
-                // We keep everything in one stage for simplicity while debugging
                 echo 'Running Gradle Build and Test...'
                 bat 'gradle clean test'
             }
@@ -18,7 +18,6 @@ pipeline {
 
     post {
         always {
-            // This now stays inside the agent scope correctly
             script {
                 echo 'Recording Test Results...'
                 junit '**/build/test-results/test/*.xml'
