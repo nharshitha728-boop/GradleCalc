@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     tools {
+        // Ensure this matches the EXACT name in Manage Jenkins -> Tools
         gradle 'gradle8.9' 
         jdk 'JDK17' 
     }
@@ -9,8 +10,7 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
-                echo 'Running Gradle...'
-                // Running the build and test in one command
+                echo 'Running Gradle Build and Test...'
                 bat 'gradle clean test'
             }
         }
@@ -18,11 +18,9 @@ pipeline {
 
     post {
         always {
-            // We use 'node' to provide the necessary FilePath context
-            node('built-in' || 'master') {
-                echo 'Recording Test Results...'
-                junit '**/build/test-results/test/*.xml'
-            }
+            // No 'node' wrapper needed here!
+            echo 'Recording Test Results...'
+            junit '**/build/test-results/test/*.xml'
         }
     }
 }
